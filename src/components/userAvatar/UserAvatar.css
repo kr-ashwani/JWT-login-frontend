@@ -1,0 +1,11 @@
+.userAvatar {
+  overflow: hidden;
+  border-radius: 50%;
+}
+.userAvatar > img {
+  border-radius: 50%;
+  /* vertical-align: middle; */
+  width: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
