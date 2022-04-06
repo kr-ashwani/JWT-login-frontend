@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const APP_ID = process.env.REACT_APP_FB_APP_ID;
 const SERVER_REDIRECT = process.env.REACT_APP_FB_SERVER_REDIRECT;
@@ -59,14 +59,19 @@ const Facebook = () => {
     // }
   }
 
+  useEffect(() => {
+    if (!path) return;
+
+    for (const [key, value] of new URLSearchParams(path))
+      if (key === "code") console.log(value);
+  }, [path]);
+
   return (
     <>
       <button onClick={() => openSignInWindow(url, "sign in with fb")}>
         Sign in with Facebook
       </button>
 
-      {console.log(path)}
-      {console.log(new URLSearchParams(path))}
       <p>{path}</p>
     </>
   );
