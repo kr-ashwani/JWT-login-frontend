@@ -14,6 +14,8 @@ const Github = () => {
     if (path) {
       async function sendPathToServer() {
         try {
+          console.log("send");
+          console.log(process.env.REACT_APP_GITHUB_SERVER_REDIRECT);
           let response = await fetch(
             process.env.REACT_APP_GITHUB_SERVER_REDIRECT,
             {
@@ -28,6 +30,7 @@ const Github = () => {
           console.log(response);
         } catch (err) {}
       }
+      console.log("inside");
       sendPathToServer();
     }
   }, [path]);
