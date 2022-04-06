@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const CLIENT_ID = process.env.REACT_APP_GITHUB_CLIENT_ID;
 const SERVER_REDIRECT = process.env.REACT_APP_GITHUB_SERVER_REDIRECT;
@@ -10,7 +10,7 @@ const Github = () => {
   let previousUrl = null;
   const [path, setPath] = useState();
 
-  useState(() => {
+  useEffect(() => {
     if (path) {
       async function sendPathToServer() {
         try {
