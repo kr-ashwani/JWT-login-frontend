@@ -47,16 +47,11 @@ const Facebook = () => {
   function receiveMessage(event) {
     // Do we trust the sender of this message? (might be
     // different from what we originally opened, for example).
+    window.removeEventListener("message", receiveMessage);
+    if (event.origin !== process.env.REACT_APP_SELF_DOMAIN) return;
     console.log(event);
-    console.log(event.origin);
-    console.log(process.env.REACT_APP_SELF_DOMAIN);
-    if (event.origin !== process.env.REACT_APP_SELF_DOMAIN) {
-      console.log("error");
-      return;
-    }
     if (!(typeof event.data === "string")) return;
     setPath(event.data);
-    window.removeEventListener("message", receiveMessage);
     // if (data.source === "lma-login-redirect") {
     //   // get the URL params and redirect to our server to use Passport to auth/login
     //   const redirectUrl = `/auth/google/login${payload}`;
