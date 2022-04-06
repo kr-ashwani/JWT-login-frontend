@@ -45,11 +45,14 @@ const Github = () => {
   function receiveMessage(event) {
     // Do we trust the sender of this message? (might be
     // different from what we originally opened, for example).
+    console.log(event);
+    console.log(event.origin);
+    console.log(process.env.REACT_APP_SELF_DOMAIN);
     if (event.origin !== process.env.REACT_APP_SELF_DOMAIN) {
+      console.log("Error 2");
       return;
     }
     if (!(typeof event.data === "string")) return;
-    console.log(event);
     setPath(event.data);
     window.removeEventListener("message", receiveMessage);
     // if (data.source === "lma-login-redirect") {
