@@ -7,7 +7,7 @@ const SELF_REDIRECT = process.env.REACT_APP_SELF_REDIRECT;
 const TEMP = "https://spicy-dragon.netlify.com";
 
 const Facebook = () => {
-  const url = `https://www.facebook.com/v13.0/dialog/oauth?client_id=${APP_ID}&redirect_uri=${SELF_REDIRECT}&state=${STATE_PARAMS}`;
+  const url = `https://www.facebook.com/v13.0/dialog/oauth?client_id=${APP_ID}&redirect_uri=${SELF_REDIRECT}&state=${STATE_PARAMS}&path=${SELF_REDIRECT}`;
   let windowObjectReference = null;
   let previousUrl = null;
   const [path, setPath] = useState("");

@@ -5,10 +5,12 @@ const SERVER_REDIRECT = process.env.REACT_APP_GITHUB_SERVER_REDIRECT;
 const SELF_REDIRECT = process.env.REACT_APP_SELF_REDIRECT;
 
 const Github = () => {
-  const url = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${SELF_REDIRECT}?path=${"/"}&scope=user:email`;
+  const url = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${SELF_REDIRECT}?path=${SELF_REDIRECT}&scope=user:email`;
   let windowObjectReference = null;
   let previousUrl = null;
   const [path, setPath] = useState();
+
+  useState(() => {});
 
   const openSignInWindow = (url, name) => {
     // remove any existing event listeners
