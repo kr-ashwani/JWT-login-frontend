@@ -66,7 +66,7 @@ const Facebook = () => {
       </button>
 
       {console.log(path)}
-      {console.log(URLSearchParams(path))}
+      {console.log(new URLSearchParams(path))}
       <p>{path}</p>
     </>
   );
