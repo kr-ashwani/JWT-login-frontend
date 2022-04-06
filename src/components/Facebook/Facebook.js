@@ -10,7 +10,7 @@ const Facebook = () => {
   const url = `https://www.facebook.com/v13.0/dialog/oauth?client_id=${APP_ID}&redirect_uri=${SELF_REDIRECT}&state=${STATE_PARAMS}`;
   let windowObjectReference = null;
   let previousUrl = null;
-  const [path, setPath] = useState();
+  const [path, setPath] = useState("");
 
   const openSignInWindow = (url, name) => {
     // remove any existing event listeners
@@ -47,7 +47,7 @@ const Facebook = () => {
   function receiveMessage(event) {
     // Do we trust the sender of this message? (might be
     // different from what we originally opened, for example).
-    if (event.origin !== "http://192.168.29.250:3000") {
+    if (event.origin !== process.env.REACT_APP_SELF_DOMAIN) {
       return;
     }
     if (!(typeof event.data === "string")) return;
