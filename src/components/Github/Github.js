@@ -10,7 +10,27 @@ const Github = () => {
   let previousUrl = null;
   const [path, setPath] = useState();
 
-  useState(() => {});
+  useState(() => {
+    if (path) {
+      async function sendPathToServer() {
+        try {
+          let response = await fetch(
+            process.env.REACT_APP_GITHUB_SERVER_REDIRECT,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(path),
+            }
+          );
+          response = await Response.json();
+          console.log(response);
+        } catch (err) {}
+      }
+      sendPathToServer();
+    }
+  }, [path]);
 
   const openSignInWindow = (url, name) => {
     // remove any existing event listeners
