@@ -1,25 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import "./AuthProviderButton.css";
 
-const APP_ID = process.env.REACT_APP_FB_APP_ID;
-const SERVER_REDIRECT = process.env.REACT_APP_FB_SERVER_REDIRECT;
-const STATE_PARAMS = process.env.REACT_APP_FB_STATE_PARAMS;
-const SELF_REDIRECT = process.env.REACT_APP_SELF_REDIRECT;
-const TEMP = "https://spicy-dragon.netlify.com";
-
-const Facebook = () => {
-  const url = `https://www.facebook.com/v13.0/dialog/oauth?client_id=${APP_ID}&redirect_uri=${SELF_REDIRECT}&state=${STATE_PARAMS}?path=${SELF_REDIRECT}&scope=email,public_profile`;
+const AuthProviderButton = ({ url, btnPayload }) => {
   let windowObjectReference = null;
   let previousUrl = null;
-  const [path, setPath] = useState("");
 
   const openSignInWindow = (url, name) => {
-    // remove any existing event listeners
-    // window.removeEventListener("message", receiveMessage);
-
     // window features
     const strWindowFeatures =
       "toolbar=no, menubar=no, width=600, height=700, top=100, left=0";
-
     if (windowObjectReference === null || windowObjectReference.closed) {
       /* if the pointer to the window object in memory does not exist
       or if such pointer exists but the window was closed */
@@ -37,7 +26,6 @@ const Facebook = () => {
       the window or to reload the referenced resource. */
       windowObjectReference.focus();
     }
-
     // add the listener for receiving a message from the popup
     window.addEventListener("message", receiveMessage);
     // assign the previous URL
@@ -49,32 +37,15 @@ const Facebook = () => {
     // different from what we originally opened, for example).
     window.removeEventListener("message", receiveMessage);
     if (event.origin !== process.env.REACT_APP_SELF_DOMAIN) return;
-    console.log(event);
+    console.log(event.data);
     if (!(typeof event.data === "string")) return;
-    setPath(event.data);
-    // if (data.source === "lma-login-redirect") {
-    //   // get the URL params and redirect to our server to use Passport to auth/login
-    //   const redirectUrl = `/auth/google/login${payload}`;
-    //   window.location.pathname = redirectUrl;
-    // }
   }
 
-  useEffect(() => {
-    if (!path) return;
-
-    for (const [key, value] of new URLSearchParams(path))
-      if (key === "code") console.log(value);
-  }, [path]);
-
   return (
-    <>
-      <button onClick={() => openSignInWindow(url, "sign in with fb")}>
-        Sign in with Facebook
-      </button>
-
-      <p>{path}</p>
-    </>
+    <button onClick={() => openSignInWindow(url, btnPayload)}>
+      {btnPayload}
+    </button>
   );
 };
 
-export default Facebook;
+export default AuthProviderButton;
