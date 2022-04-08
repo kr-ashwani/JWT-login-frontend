@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ProvidersButtons from "../../components/AuthProviderButton/ProvidersButtons";
 import { useAuth } from "../../context/AuthContext";
 import "./Signup.css";
 
@@ -96,7 +97,7 @@ const Signup = () => {
     if (password.trim() !== confirmPassword.trim()) return;
     let response;
     try {
-      response = await fetch("http://192.168.29.250:3300/signup", {
+      response = await fetch("http://localhost:3300/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -105,17 +106,18 @@ const Signup = () => {
           ...signupData,
           photoUrl: `https://avatars.dicebear.com/api/${randomPhotoUrlString}`,
         }),
+        credentials: "include",
       });
       response = await response.json();
-      if (response.currentUser) {
+      if (response.accessToken) {
         setUser({
           accessToken: response.accessToken,
-          currentUser: response.currentUser,
+          currentUser: null,
         });
         navigate("/");
       }
     } catch (err) {
-      //response.message
+      console.log(err.message);
     }
     if (response?.message) {
       setExtaMessage((prev) => ({
@@ -133,6 +135,8 @@ const Signup = () => {
       <div className="signupForm">
         <form onSubmit={handleSubmit}>
           <h2>Sign up</h2>
+          <ProvidersButtons />
+          <div className="optionLine">or</div>
           <div className="field">
             <label htmlFor="firstName">Name</label>
             <div className="combinedInput">

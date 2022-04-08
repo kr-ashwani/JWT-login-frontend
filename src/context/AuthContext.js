@@ -9,7 +9,39 @@ function useAuth() {
 function AuthProvider({ children }) {
   const [user, setUser] = useState({ currentUser: null, accessToken: null });
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    async function getUserInfo() {
+      let userInfo = await fetch(
+        `${process.env.REACT_APP_SERVER_ENDPOINT}/auth/userinfo`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.accessToken}`,
+          },
+        }
+      );
+      userInfo = await userInfo.json();
+      setUser((prev) => ({ ...prev, currentUser: userInfo.currentUser }));
+    }
+    if (user.accessToken) getUserInfo();
+  }, [user.accessToken]);
+
+  useEffect(() => {
+    async function getAccessToken() {
+      console.log("hello");
+      let res = await fetch(
+        `${process.env.REACT_APP_SERVER_ENDPOINT}/auth/refresh`,
+        {
+          credentials: "include",
+          headers: {
+            "x-tokenReqTime": Date.now(),
+          },
+        }
+      );
+      res = await res.json();
+      setUser((prev) => ({ ...prev, accessToken: res.accessToken }));
+    }
+    getAccessToken();
+  }, []);
 
   const value = {
     ...user,

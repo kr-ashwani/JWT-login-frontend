@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ProvidersButtons from "../../components/AuthProviderButton/ProvidersButtons";
 import { useAuth } from "../../context/AuthContext";
 import "./Login.css";
 
@@ -61,9 +62,11 @@ const Login = () => {
 
   return (
     <div className="mainContent">
-      <div className="loginForm">
+      <div className="signupForm">
         <form onSubmit={handleSubmit}>
           <h2>Log In</h2>
+          <ProvidersButtons />
+          <div className="optionLine">or</div>
           <div className="field">
             <label htmlFor="email">Email</label>
             <input

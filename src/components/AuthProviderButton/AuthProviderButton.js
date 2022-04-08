@@ -1,7 +1,7 @@
 import React from "react";
 import "./AuthProviderButton.css";
 
-const AuthProviderButton = ({ url, btnPayload }) => {
+const AuthProviderButton = ({ url, icon, setServerRes }) => {
   let windowObjectReference = null;
   let previousUrl = null;
 
@@ -37,15 +37,14 @@ const AuthProviderButton = ({ url, btnPayload }) => {
     // different from what we originally opened, for example).
     window.removeEventListener("message", receiveMessage);
     if (event.origin !== process.env.REACT_APP_SELF_DOMAIN) return;
-    console.log(event.data);
     if (!(typeof event.data === "string")) return;
+    const serverObj = {};
+    for (let [key, value] of new URLSearchParams(event.data))
+      serverObj[key] = value;
+    setServerRes(serverObj);
   }
 
-  return (
-    <button onClick={() => openSignInWindow(url, btnPayload)}>
-      {btnPayload}
-    </button>
-  );
+  return <div onClick={() => openSignInWindow(url)}>{icon}</div>;
 };
 
 export default AuthProviderButton;

@@ -20,17 +20,15 @@ const UserInfo = () => {
           </thead>
           <tbody>
             {Object.entries(currentUser).map((elem, id) => {
-              if (
-                elem[0] === "_id" ||
-                elem[0] === "createdAt" ||
-                elem[0] === "lastLoginAt" ||
-                elem[0] === "photoUrl"
-              )
-                return <></>;
+              if (elem[0] === "photoUrl") return <></>;
               return (
                 <tr className="userInfoField" key={`${id}`}>
                   <td>{elem[0]}</td>
-                  <td>{elem[1]}</td>
+                  {typeof elem[1] === Boolean ? (
+                    <td>"{elem[1]}"</td>
+                  ) : (
+                    <td>{elem[1]}</td>
+                  )}
                 </tr>
               );
             })}

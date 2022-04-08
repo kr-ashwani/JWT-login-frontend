@@ -1,15 +1,15 @@
 form h2 {
   text-align: center;
-  font-size: 2.4em;
+  font-size: 1.8rem;
   font-weight: 900;
-  margin-bottom: 5px;
+  margin: 10px 0 5px;
 }
 .mainContent {
   display: flex;
 }
 .mainContent > .signupForm,
 .mainContent > .loginForm {
-  max-width: 430px;
+  max-width: 440px;
   flex-grow: 1;
 }
 form {

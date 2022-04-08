@@ -24,19 +24,21 @@ const Header = () => {
   }, []);
   return (
     <nav>
-      <h1>
-        <Link to="/">JWT Login</Link>
-      </h1>
-      <ul>
-        <li>
-          <Link to="/login">Log in</Link>
-        </li>
-        <li>
-          <Link to="/signup" className="btn">
-            Sign up
-          </Link>
-        </li>
-      </ul>
+      <div className="navbar">
+        <h1>
+          <Link to="/">JWT Login</Link>
+        </h1>
+        <ul>
+          <li>
+            <Link to="/login">Log in</Link>
+          </li>
+          <li>
+            <Link to="/signup" className="btn">
+              Sign up
+            </Link>
+          </li>
+        </ul>
+      </div>
     </nav>
   );
 };
