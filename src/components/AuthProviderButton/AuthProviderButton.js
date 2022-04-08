@@ -36,7 +36,7 @@ const AuthProviderButton = ({ url, icon, setServerRes }) => {
     // Do we trust the sender of this message? (might be
     // different from what we originally opened, for example).
     window.removeEventListener("message", receiveMessage);
-    if (event.origin !== process.env.REACT_APP_SELF_DOMAIN) return;
+    if (event.origin !== `${process.env.REACT_APP_SELF_DOMAIN}`) return;
     if (!(typeof event.data === "string")) return;
     const serverObj = {};
     for (let [key, value] of new URLSearchParams(event.data))

@@ -27,7 +27,6 @@ function AuthProvider({ children }) {
 
   useEffect(() => {
     async function getAccessToken() {
-      console.log("hello");
       let res = await fetch(
         `${process.env.REACT_APP_SERVER_ENDPOINT}/auth/refresh`,
         {

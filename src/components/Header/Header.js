@@ -4,7 +4,7 @@ import "./Header.css";
 import { useAuth } from "../../context/AuthContext";
 
 const Header = () => {
-  const { currentUser } = useAuth();
+  const { currentUser, setUser } = useAuth();
 
   useEffect(() => {
     console.log("Current user ", currentUser);
@@ -22,6 +22,17 @@ const Header = () => {
     window.addEventListener("resize", setVh);
     return () => window.removeEventListener("resize", setVh);
   }, []);
+
+  async function logOut() {
+    await fetch(`${process.env.REACT_APP_SERVER_ENDPOINT}/logout`, {
+      credentials: "include",
+    });
+    setUser({
+      currentUser: null,
+      accessToken: null,
+    });
+  }
+
   return (
     <nav>
       <div className="navbar">
@@ -29,14 +40,24 @@ const Header = () => {
           <Link to="/">JWT Login</Link>
         </h1>
         <ul>
-          <li>
-            <Link to="/login">Log in</Link>
-          </li>
-          <li>
-            <Link to="/signup" className="btn">
-              Sign up
-            </Link>
-          </li>
+          {!currentUser ? (
+            <>
+              <li>
+                <Link to="/login">Log in</Link>
+              </li>
+              <li>
+                <Link to="/signup" className="btn">
+                  Sign up
+                </Link>
+              </li>
+            </>
+          ) : (
+            <li>
+              <Link onClick={logOut} to="/signup" className="btn">
+                Log out
+              </Link>
+            </li>
+          )}
         </ul>
       </div>
     </nav>

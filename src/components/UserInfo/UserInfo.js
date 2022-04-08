@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import UserAvatar from "../../components/userAvatar/UserAvatar";
 import { useAuth } from "../../context/AuthContext";
 import "./UserInfo.css";
@@ -20,7 +20,14 @@ const UserInfo = () => {
           </thead>
           <tbody>
             {Object.entries(currentUser).map((elem, id) => {
-              if (elem[0] === "photoUrl") return <></>;
+              if (elem[0] === "photoUrl") return null;
+              if (Array.isArray(elem[1]))
+                return (
+                  <tr className="userInfoField" key={`${id}`}>
+                    <td>{elem[0]}</td>
+                    <td>{elem[1].join(" , ")}</td>
+                  </tr>
+                );
               return (
                 <tr className="userInfoField" key={`${id}`}>
                   <td>{elem[0]}</td>

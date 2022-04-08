@@ -5,7 +5,7 @@ import { useAuth } from "../../context/AuthContext";
 import "./Login.css";
 
 const Login = () => {
-  const { setUser } = useAuth();
+  const { setUser, currentUser } = useAuth();
   const navigate = useNavigate();
   const [loginData, setLoginData] = useState({
     email: "",
@@ -16,6 +16,10 @@ const Login = () => {
     pwdEntered: false,
   });
   const { password, email } = loginData;
+
+  useEffect(() => {
+    if (currentUser) navigate("/");
+  }, [currentUser, navigate]);
 
   useEffect(() => {
     if (pwdMsg.current.pwdEntered) return;
@@ -65,7 +69,7 @@ const Login = () => {
       <div className="signupForm">
         <form onSubmit={handleSubmit}>
           <h2>Log In</h2>
-          <ProvidersButtons />
+          <ProvidersButtons authType="login" />
           <div className="optionLine">or</div>
           <div className="field">
             <label htmlFor="email">Email</label>

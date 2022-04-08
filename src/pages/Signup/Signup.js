@@ -5,7 +5,7 @@ import { useAuth } from "../../context/AuthContext";
 import "./Signup.css";
 
 const Signup = () => {
-  const { setUser } = useAuth();
+  const { setUser, currentUser } = useAuth();
   const navigate = useNavigate();
   const [signupData, setSignupData] = useState({
     firstName: "",
@@ -23,6 +23,10 @@ const Signup = () => {
     pwdEntered: false,
     cnfPwdEntered: false,
   });
+
+  useEffect(() => {
+    if (currentUser) navigate("/");
+  }, [currentUser, navigate]);
 
   const { firstName, password, confirmPassword } = signupData;
 
@@ -135,7 +139,7 @@ const Signup = () => {
       <div className="signupForm">
         <form onSubmit={handleSubmit}>
           <h2>Sign up</h2>
-          <ProvidersButtons />
+          <ProvidersButtons authType="signup" />
           <div className="optionLine">or</div>
           <div className="field">
             <label htmlFor="firstName">Name</label>
