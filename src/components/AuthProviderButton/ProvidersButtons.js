@@ -33,7 +33,7 @@ const ProvidersButtons = ({ authType }) => {
           icon={<i className="fa-brands fa-facebook-f"></i>}
           setServerRes={setServerRes}></AuthProviderButton>
         <AuthProviderButton
-          url={getGithubAuthUrl("signup")}
+          url={getGithubAuthUrl(authType)}
           icon={<i className="fa-brands fa-github"></i>}
           setServerRes={setServerRes}></AuthProviderButton>
       </div>

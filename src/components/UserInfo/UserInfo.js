@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import UserAvatar from "../../components/userAvatar/UserAvatar";
 import { useAuth } from "../../context/AuthContext";
 import "./UserInfo.css";
+import { format } from "date-fns";
 
 const UserInfo = () => {
   const { currentUser } = useAuth();
@@ -21,6 +22,15 @@ const UserInfo = () => {
           <tbody>
             {Object.entries(currentUser).map((elem, id) => {
               if (elem[0] === "photoUrl") return null;
+              if (elem[0] === "createdAt" || elem[0] === "lastLoginAt")
+                return (
+                  <tr className="userInfoField" key={`${id}`}>
+                    <td>{elem[0]}</td>
+                    <td>
+                      {format(new Date(elem[1]), "EE do MMMM yyyy hh:mm:ss a")}
+                    </td>
+                  </tr>
+                );
               if (Array.isArray(elem[1]))
                 return (
                   <tr className="userInfoField" key={`${id}`}>
@@ -31,8 +41,8 @@ const UserInfo = () => {
               return (
                 <tr className="userInfoField" key={`${id}`}>
                   <td>{elem[0]}</td>
-                  {typeof elem[1] === Boolean ? (
-                    <td>"{elem[1]}"</td>
+                  {typeof elem[1] === "boolean" ? (
+                    <td>{`${elem[1]}`}</td>
                   ) : (
                     <td>{elem[1]}</td>
                   )}
