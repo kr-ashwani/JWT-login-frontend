@@ -1,22 +1,22 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import ProvidersButtons from "../../components/AuthProviderButton/ProvidersButtons";
-import { useAuth } from "../../context/AuthContext";
-import "./Signup.css";
+import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import ProvidersButtons from '../../components/AuthProviderButton/ProvidersButtons';
+import { useAuth } from '../../context/AuthContext';
+import './Signup.css';
 
 const Signup = () => {
   const { setUser, currentUser } = useAuth();
   const navigate = useNavigate();
   const [signupData, setSignupData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    address: "",
-    collegeName: "",
-    authProvider: "emailPassword",
-    photoUrl: "",
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    address: '',
+    collegeName: '',
+    authProvider: 'emailPassword',
+    photoUrl: '',
   });
   const [extraMessage, setExtaMessage] = useState({});
   const pwdMsg = useRef({
@@ -25,17 +25,17 @@ const Signup = () => {
   });
 
   useEffect(() => {
-    if (currentUser) navigate("/");
+    if (currentUser) navigate('/');
   }, [currentUser, navigate]);
 
   const { firstName, password, confirmPassword } = signupData;
 
   const randomPhotoUrlString = `${
-    ["micah", "avataaars"][Math.floor(Math.random() * 2)]
+    ['micah', 'avataaars'][Math.floor(Math.random() * 2)]
   }/${firstName}${Math.floor(Math.random() * 20)}.svg`;
   const handleChange = (name) => (event) => {
     const pwdOrCnf =
-      name === "password" || name === "confirmPassword" ? true : false;
+      name === 'password' || name === 'confirmPassword' ? true : false;
     setSignupData((prev) => ({
       ...prev,
       [name]: pwdOrCnf
@@ -59,16 +59,16 @@ const Signup = () => {
         setExtaMessage((prev) => ({
           ...prev,
           pwd: {
-            type: "error",
-            payload: "Password should be atleast 6 characters.",
+            type: 'error',
+            payload: 'Password should be atleast 6 characters.',
           },
         }));
       else
         setExtaMessage((prev) => ({
           ...prev,
           pwd: {
-            type: "success",
-            payload: "Password length is ok.",
+            type: 'success',
+            payload: 'Password length is ok.',
           },
         }));
 
@@ -78,16 +78,16 @@ const Signup = () => {
           setExtaMessage((prev) => ({
             ...prev,
             cnfPwd: {
-              type: "success",
-              payload: "Password matched.",
+              type: 'success',
+              payload: 'Password matched.',
             },
           }));
         } else
           setExtaMessage((prev) => ({
             ...prev,
             cnfPwd: {
-              type: "error",
-              payload: "Password did not match.",
+              type: 'error',
+              payload: 'Password did not match.',
             },
           }));
       }
@@ -99,36 +99,34 @@ const Signup = () => {
     setExtaMessage((prev) => ({ ...prev, resErr: {} }));
     if (password.trim().length < 6) return;
     if (password.trim() !== confirmPassword.trim()) return;
-    let response;
     try {
-      response = await fetch("http://localhost:3300/signup", {
-        method: "POST",
+      const response = await fetch('http://localhost:3300/signup', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           ...signupData,
           photoUrl: `https://avatars.dicebear.com/api/${randomPhotoUrlString}`,
         }),
-        credentials: "include",
+        credentials: 'include',
       });
-      response = await response.json();
-      if (response.accessToken) {
+      if (!response.ok)
+        throw new Error(JSON.parse(await response.text()).message);
+      const { accessToken } = await response.json();
+      if (accessToken) {
         setUser({
-          accessToken: response.accessToken,
+          accessToken,
           currentUser: null,
         });
-        navigate("/");
+        navigate('/');
       }
     } catch (err) {
-      console.log(err.message);
-    }
-    if (response?.message) {
       setExtaMessage((prev) => ({
         ...prev,
         resErr: {
-          type: "error",
-          payload: response.message,
+          payload: err.message,
+          type: 'error',
         },
       }));
     }
@@ -146,7 +144,7 @@ const Signup = () => {
             <div className="combinedInput">
               <input
                 value={signupData.firstName}
-                onChange={handleChange("firstName")}
+                onChange={handleChange('firstName')}
                 id="firstName"
                 type="text"
                 name="firstName"
@@ -155,7 +153,7 @@ const Signup = () => {
               />
               <input
                 value={signupData.lastName}
-                onChange={handleChange("lastName")}
+                onChange={handleChange('lastName')}
                 type="text"
                 name="lastName"
                 required
@@ -170,7 +168,7 @@ const Signup = () => {
             <label htmlFor="email">Email</label>
             <input
               value={signupData.email}
-              onChange={handleChange("email")}
+              onChange={handleChange('email')}
               id="email"
               type="email"
               name="email"
@@ -185,7 +183,7 @@ const Signup = () => {
             <label htmlFor="clg">College</label>
             <input
               value={signupData.collegeName}
-              onChange={handleChange("collegeName")}
+              onChange={handleChange('collegeName')}
               id="clg"
               type="text"
               name="college"
@@ -200,7 +198,7 @@ const Signup = () => {
             <label htmlFor="address">Address</label>
             <input
               value={signupData.address}
-              onChange={handleChange("address")}
+              onChange={handleChange('address')}
               id="address"
               type="text"
               name="address"
@@ -215,7 +213,7 @@ const Signup = () => {
             <label htmlFor="pwd">Password</label>
             <input
               value={signupData.password}
-              onChange={handleChange("password")}
+              onChange={handleChange('password')}
               id="pwd"
               type="password"
               name="password"
@@ -231,7 +229,7 @@ const Signup = () => {
             <label htmlFor="cnfpwd">Confirm Password</label>
             <input
               value={signupData.confirmPassword}
-              onChange={handleChange("confirmPassword")}
+              onChange={handleChange('confirmPassword')}
               id="cnfpwd"
               type="password"
               name="confirm password"

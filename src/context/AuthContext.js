@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from 'react';
 
 const AuthContext = React.createContext();
 
@@ -11,7 +11,7 @@ function AuthProvider({ children }) {
 
   useEffect(() => {
     async function getUserInfo() {
-      let userInfo = await fetch(
+      const response = await fetch(
         `${process.env.REACT_APP_SERVER_ENDPOINT}/auth/userinfo`,
         {
           headers: {
@@ -19,8 +19,9 @@ function AuthProvider({ children }) {
           },
         }
       );
-      userInfo = await userInfo.json();
-      setUser((prev) => ({ ...prev, currentUser: userInfo.currentUser }));
+      if (!response.ok) return;
+      const { currentUser } = await response.json();
+      setUser((prev) => ({ ...prev, currentUser }));
     }
     if (user.accessToken) getUserInfo();
   }, [user.accessToken]);
@@ -30,14 +31,15 @@ function AuthProvider({ children }) {
       let res = await fetch(
         `${process.env.REACT_APP_SERVER_ENDPOINT}/auth/refresh`,
         {
-          credentials: "include",
+          credentials: 'include',
           headers: {
-            "x-tokenReqTime": Date.now(),
+            'x-tokenReqTime': Date.now(),
           },
         }
       );
-      res = await res.json();
-      setUser((prev) => ({ ...prev, accessToken: res.accessToken }));
+      if (!res.ok) return;
+      const { accessToken } = await res.json();
+      if (accessToken) setUser((prev) => ({ ...prev, accessToken }));
     }
     getAccessToken();
   }, []);

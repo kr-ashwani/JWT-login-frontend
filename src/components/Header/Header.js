@@ -1,36 +1,38 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
-import "./Header.css";
-import { useAuth } from "../../context/AuthContext";
+import React, { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import './Header.css';
+import { useAuth } from '../../context/AuthContext';
 
 const Header = () => {
   const { currentUser, setUser } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("Current user ", currentUser);
+    console.log('Current user ', currentUser);
   });
 
   useEffect(() => {
     function setVh() {
-      const vh = window.innerHeight * 0.01;
+      const vh = window.innerHeight * 0.0098;
       document
-        .getElementsByTagName("html")[0]
-        .style.setProperty("--vh", `${vh}px`);
+        .getElementsByTagName('html')[0]
+        .style.setProperty('--vh', `${vh}px`);
     }
     setVh();
 
-    window.addEventListener("resize", setVh);
-    return () => window.removeEventListener("resize", setVh);
+    window.addEventListener('resize', setVh);
+    return () => window.removeEventListener('resize', setVh);
   }, []);
 
   async function logOut() {
     await fetch(`${process.env.REACT_APP_SERVER_ENDPOINT}/logout`, {
-      credentials: "include",
+      credentials: 'include',
     });
     setUser({
       currentUser: null,
       accessToken: null,
     });
+    navigate('/');
   }
 
   return (

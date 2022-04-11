@@ -1,15 +1,15 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import ProvidersButtons from "../../components/AuthProviderButton/ProvidersButtons";
-import { useAuth } from "../../context/AuthContext";
-import "./Login.css";
+import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import ProvidersButtons from '../../components/AuthProviderButton/ProvidersButtons';
+import { useAuth } from '../../context/AuthContext';
+import './Login.css';
 
 const Login = () => {
   const { setUser, currentUser } = useAuth();
   const navigate = useNavigate();
   const [loginData, setLoginData] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
   const [extraMessage, setExtaMessage] = useState({});
   const pwdMsg = useRef({
@@ -18,7 +18,7 @@ const Login = () => {
   const { password, email } = loginData;
 
   useEffect(() => {
-    if (currentUser) navigate("/");
+    if (currentUser) navigate('/');
   }, [currentUser, navigate]);
 
   useEffect(() => {
@@ -32,16 +32,16 @@ const Login = () => {
         setExtaMessage((prev) => ({
           ...prev,
           pwd: {
-            type: "error",
-            payload: "Password should be atleast 6 characters.",
+            type: 'error',
+            payload: 'Password should be atleast 6 characters.',
           },
         }));
       else
         setExtaMessage((prev) => ({
           ...prev,
           pwd: {
-            type: "success",
-            payload: "Password length is ok.",
+            type: 'success',
+            payload: 'Password length is ok.',
           },
         }));
     }
@@ -49,7 +49,7 @@ const Login = () => {
 
   const handleChange = (name) => (event) => {
     const pwdOrCnf =
-      name === "password" || name === "confirmPassword" ? true : false;
+      name === 'password' || name === 'confirmPassword' ? true : false;
     setLoginData((prev) => ({
       ...prev,
       [name]: pwdOrCnf
@@ -61,7 +61,28 @@ const Login = () => {
   async function handleSubmit(e) {
     e.preventDefault();
     if (password.trim().length < 6) return;
-    console.log(loginData);
+    try {
+      const response = await fetch('http://localhost:3300/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(loginData),
+        credentials: 'include',
+      });
+      if (!response.ok)
+        throw new Error(JSON.parse(await response.text()).message);
+      const { accessToken } = await response.json();
+      if (accessToken) setUser((prev) => ({ ...prev, accessToken }));
+    } catch (err) {
+      setExtaMessage((prev) => ({
+        ...prev,
+        resErr: {
+          type: 'error',
+          payload: err.message,
+        },
+      }));
+    }
   }
 
   return (
@@ -75,7 +96,7 @@ const Login = () => {
             <label htmlFor="email">Email</label>
             <input
               value={email}
-              onChange={handleChange("email")}
+              onChange={handleChange('email')}
               id="email"
               type="email"
               name="email"
@@ -90,7 +111,7 @@ const Login = () => {
             <label htmlFor="name">Password</label>
             <input
               value={password}
-              onChange={handleChange("password")}
+              onChange={handleChange('password')}
               id="pwd"
               type="password"
               name="password"

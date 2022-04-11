@@ -1,7 +1,7 @@
-import React from "react";
-import { useAuth } from "../../context/AuthContext";
-import "./Home.css";
-import UserInfo from "../../components/UserInfo/UserInfo";
+import React from 'react';
+import { useAuth } from '../../context/AuthContext';
+import './Home.css';
+import UserInfo from '../../components/UserInfo/UserInfo';
 
 const Home = () => {
   const { currentUser } = useAuth();
@@ -13,7 +13,7 @@ const Home = () => {
       ) : (
         <div className="userInfo">
           <h4>Welcome to JWT Authentication.</h4>
-          <p style={{ textAlign: "center" }}>You are guest.</p>
+          <p style={{ textAlign: 'center' }}>You are guest.</p>
         </div>
       )}
     </div>
