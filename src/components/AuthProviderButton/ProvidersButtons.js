@@ -1,25 +1,22 @@
-import React, { useEffect, useState } from "react";
-import AuthProviderButton from "../../components/AuthProviderButton/AuthProviderButton";
+import React, { useEffect, useState } from 'react';
+import AuthProviderButton from '../../components/AuthProviderButton/AuthProviderButton';
 import {
   getFacebookAuthUrl,
   getGithubAuthUrl,
   getGoogleAuthUrl,
-} from "../../../src/auth/getAuthUrl";
-import googleIcon from "../../assets/google-icon.svg";
-import { useAuth } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+} from '../../../src/auth/getAuthUrl';
+import googleIcon from '../../assets/google-icon.svg';
+import { useAuth } from '../../context/AuthContext';
 
 const ProvidersButtons = ({ authType }) => {
   const { setUser } = useAuth();
-  const navigate = useNavigate();
   const [serverRes, setServerRes] = useState();
 
   useEffect(() => {
     if (serverRes?.accessToken) {
       setUser((prev) => ({ ...prev, accessToken: serverRes.accessToken }));
-      navigate("/");
     }
-  }, [serverRes, setUser, navigate]);
+  }, [serverRes, setUser]);
 
   return (
     <>
@@ -37,7 +34,7 @@ const ProvidersButtons = ({ authType }) => {
           icon={<i className="fa-brands fa-github"></i>}
           setServerRes={setServerRes}></AuthProviderButton>
       </div>
-      <div className={`responseError ${serverRes?.error ? "error" : ""}`}>
+      <div className={`responseError ${serverRes?.error ? 'error' : ''}`}>
         {serverRes?.error}
       </div>
     </>

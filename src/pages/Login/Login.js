@@ -7,6 +7,7 @@ import './Login.css';
 const Login = () => {
   const { setUser, currentUser } = useAuth();
   const navigate = useNavigate();
+
   const [loginData, setLoginData] = useState({
     email: '',
     password: '',
@@ -84,6 +85,8 @@ const Login = () => {
       }));
     }
   }
+
+  
 
   return (
     <div className="mainContent">

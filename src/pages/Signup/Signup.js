@@ -119,7 +119,7 @@ const Signup = () => {
           accessToken,
           currentUser: null,
         });
-        navigate('/');
+        // navigate('/');
       }
     } catch (err) {
       setExtaMessage((prev) => ({
